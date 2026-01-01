@@ -22,17 +22,7 @@ const HighlightText = ({ text = '', highlight = '' }) => {
   );
 };
 
-// Static location data for Lebanon - Baalbek-Hermel region
-const LOCATIONS = [
-  { id: 1, name_en: 'Baalbek', name_ar: 'بعلبك' },
-  { id: 2, name_en: 'Hermel', name_ar: 'الهرمل' },
-  { id: 3, name_en: 'Arsal', name_ar: 'عرسال' },
-  { id: 4, name_en: 'Ras Baalbek', name_ar: 'رأس بعلبك' },
-  { id: 5, name_en: 'Brital', name_ar: 'بريتال' },
-  { id: 6, name_en: 'Deir El Ahmar', name_ar: 'دير الأحمر' },
-  { id: 7, name_en: 'Labweh', name_ar: 'اللبوة' },
-  { id: 8, name_en: 'Nabi Sheet', name_ar: 'النبي شيت' }
-];
+import { LOCATIONS } from '../../utils/locations';
 
 const SearchBar = () => {
   const { t, i18n } = useTranslation();
@@ -83,12 +73,12 @@ const SearchBar = () => {
   }, []);
 
   const handleLocationChange = (e) => {
-    const value = e.target.value;
     setLocation(value);
     setShowLocationDropdown(true);
 
     const filtered = LOCATIONS.filter(loc =>
-      (loc.name_ar + ' ' + loc.name_en).toLowerCase().includes(value.toLowerCase())
+      loc.name_en.toLowerCase().includes(value.toLowerCase()) ||
+      loc.name_ar.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredLocations(filtered);
   };

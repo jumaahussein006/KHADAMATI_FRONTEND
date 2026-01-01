@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import { useAuth } from '../context/AuthContext';
+import { FiMapPin, FiX } from 'react-icons/fi';
 import { servicesAPI, requestsAPI } from '../services/apiService';
 import { UPLOAD_URL } from '../utils/api';
 import { getServiceName, getCategoryName } from '../utils/langHelper';
 import { getProblemExamples } from '../utils/problemTypes';
+import { LOCATIONS } from '../utils/locations';
 
 const ServiceDetails = () => {
   const { id } = useParams();
@@ -31,7 +33,10 @@ const ServiceDetails = () => {
     scheduleddate: '',
     details: '',
     problemDescription: '',
+    address: '',
   });
+  const [showAddressDropdown, setShowAddressDropdown] = useState(false);
+  const [filteredLocations, setFilteredLocations] = useState(LOCATIONS);
 
   useEffect(() => {
     const fetchServiceDetails = async () => {
@@ -71,6 +76,7 @@ const ServiceDetails = () => {
         scheduled_date: requestData.scheduleddate,
         details: requestData.details || '',
         problem_type: requestData.problemDescription,
+        address: requestData.address,
       });
       alert(t('success.requestSubmitted'));
       navigate('/customer/requests');
@@ -194,6 +200,66 @@ const ServiceDetails = () => {
                       required
                       className="w-full px-4 py-3 rounded-lg border dark:bg-gray-800 dark:text-white"
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-200 mb-2">
+                      {i18n.language === 'ar' ? 'العنوان (اختر من القائمة) *' : 'Address (Select from list) *'}
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <FiMapPin />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder={i18n.language === 'ar' ? 'ابحث عن منطقة...' : 'Search for an area...'}
+                        value={requestData.address}
+                        onFocus={() => setShowAddressDropdown(true)}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setRequestData(p => ({ ...p, address: val }));
+                          setFilteredLocations(LOCATIONS.filter(l =>
+                            (l.name_ar + l.name_en).toLowerCase().includes(val.toLowerCase())
+                          ));
+                          setShowAddressDropdown(true);
+                        }}
+                        required
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border dark:bg-gray-800 dark:text-white"
+                      />
+                      {requestData.address && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRequestData(p => ({ ...p, address: '' }));
+                            setFilteredLocations(LOCATIONS);
+                          }}
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                        >
+                          <FiX />
+                        </button>
+                      )}
+
+                      {showAddressDropdown && filteredLocations.length > 0 && (
+                        <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                          {filteredLocations.map((loc) => (
+                            <button
+                              key={loc.id}
+                              type="button"
+                              onClick={() => {
+                                setRequestData(p => ({ ...p, address: i18n.language === 'ar' ? loc.name_ar : loc.name_en }));
+                                setShowAddressDropdown(false);
+                              }}
+                              className="w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200 text-sm border-b last:border-0"
+                            >
+                              <div className="flex items-center gap-2">
+                                <FiMapPin className="text-gray-400 text-xs" />
+                                <span>{i18n.language === 'ar' ? loc.name_ar : loc.name_en}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div>
