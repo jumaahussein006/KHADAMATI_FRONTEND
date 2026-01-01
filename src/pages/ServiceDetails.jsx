@@ -112,12 +112,7 @@ const ServiceDetails = () => {
     service?.category?.categoryId ||
     service?.category?.category_id;
 
-  console.log('[ServiceDetails] Service:', service);
-  console.log('[ServiceDetails] Detected categoryId:', catId, 'Type:', typeof catId);
-  console.log('[ServiceDetails] Category object:', service?.category);
-
   const problemExamples = getProblemExamples(catId, i18n.language);
-  console.log('[ServiceDetails] Problem examples count:', problemExamples.length);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -170,17 +165,13 @@ const ServiceDetails = () => {
 
               {showRequestForm && (
                 <form onSubmit={handleRequestSubmit} className="mt-6 space-y-4 bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-                  {/* DEBUG: Show category ID */}
-                  <div className="mb-2 p-2 bg-yellow-100 dark:bg-yellow-900 text-xs rounded">
-                    <strong>DEBUG:</strong> Category ID: {catId || 'NOT FOUND'} | Examples: {problemExamples.length}
-                  </div>
-
                   <div>
                     <label className="block text-sm font-bold text-gray-700 dark:text-gray-200 mb-3">
                       {i18n.language === 'ar' ? 'اختر المشكلة *' : 'Select Problem *'}
                     </label>
 
-                    {problemExamples.length > 0 && (
+                    {/* Problem Examples Buttons - Always show if we have any */}
+                    {problemExamples && problemExamples.length > 0 ? (
                       <div className="mb-3">
                         <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
                           {i18n.language === 'ar' ? 'أمثلة شائعة:' : 'Common examples:'}
@@ -192,8 +183,8 @@ const ServiceDetails = () => {
                               type="button"
                               onClick={() => setRequestData((p) => ({ ...p, problemDescription: example }))}
                               className={`px-3 py-2 rounded-lg text-sm font-medium transition ${requestData.problemDescription === example
-                                ? 'bg-[#0BA5EC] text-white'
-                                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-[#0BA5EC] hover:text-[#0BA5EC]'
+                                  ? 'bg-[#0BA5EC] text-white'
+                                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-[#0BA5EC] hover:text-[#0BA5EC]'
                                 }`}
                             >
                               {example}
@@ -201,7 +192,7 @@ const ServiceDetails = () => {
                           ))}
                         </div>
                       </div>
-                    )}
+                    ) : null}
 
                     <div className="relative">
                       <input
