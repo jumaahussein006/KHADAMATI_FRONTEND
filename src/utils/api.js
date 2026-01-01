@@ -4,7 +4,8 @@ const TOKEN_KEY = 'khadamati_token';
 const USER_KEY = 'khadamati_user';
 
 // Get API URL from environment variable, fallback to localhost for local dev
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api/v1';
+// Create React App uses process.env.REACT_APP_ prefix
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000/api/v1';
 export const API_URL = BASE_URL;
 export const UPLOAD_URL = BASE_URL.replace('/api/v1', '');
 
