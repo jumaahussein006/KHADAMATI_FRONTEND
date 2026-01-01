@@ -76,7 +76,24 @@ export const PROBLEM_EXAMPLES = {
 
 // Get problem examples for a category
 export const getProblemExamples = (categoryId, language = 'en') => {
-    const category = PROBLEM_EXAMPLES[categoryId];
-    if (!category) return [];
-    return language === 'ar' ? category.examples_ar : category.examples_en;
+    console.log('[PROBLEM_EXAMPLES] Input categoryId:', categoryId, 'Type:', typeof categoryId);
+    console.log('[PROBLEM_EXAMPLES] Available keys:', Object.keys(PROBLEM_EXAMPLES));
+
+    // Handle both string and number IDs
+    const numId = Number(categoryId);
+    const strId = String(categoryId);
+
+    // Try number first, then string
+    let category = PROBLEM_EXAMPLES[numId] || PROBLEM_EXAMPLES[strId] || PROBLEM_EXAMPLES[categoryId];
+
+    console.log('[PROBLEM_EXAMPLES] Found category:', !!category, 'for ID:', categoryId);
+
+    if (!category) {
+        console.warn('[PROBLEM_EXAMPLES] No examples found for categoryId:', categoryId);
+        return [];
+    }
+
+    const examples = language === 'ar' ? category.examples_ar : category.examples_en;
+    console.log('[PROBLEM_EXAMPLES] Returning', examples.length, 'examples for language:', language);
+    return examples;
 };

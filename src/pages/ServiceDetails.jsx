@@ -112,7 +112,12 @@ const ServiceDetails = () => {
     service?.category?.categoryId ||
     service?.category?.category_id;
 
+  console.log('[ServiceDetails] Service:', service);
+  console.log('[ServiceDetails] Detected categoryId:', catId, 'Type:', typeof catId);
+  console.log('[ServiceDetails] Category object:', service?.category);
+
   const problemExamples = getProblemExamples(catId, i18n.language);
+  console.log('[ServiceDetails] Problem examples count:', problemExamples.length);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -165,6 +170,11 @@ const ServiceDetails = () => {
 
               {showRequestForm && (
                 <form onSubmit={handleRequestSubmit} className="mt-6 space-y-4 bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                  {/* DEBUG: Show category ID */}
+                  <div className="mb-2 p-2 bg-yellow-100 dark:bg-yellow-900 text-xs rounded">
+                    <strong>DEBUG:</strong> Category ID: {catId || 'NOT FOUND'} | Examples: {problemExamples.length}
+                  </div>
+
                   <div>
                     <label className="block text-sm font-bold text-gray-700 dark:text-gray-200 mb-3">
                       {i18n.language === 'ar' ? 'اختر المشكلة *' : 'Select Problem *'}
