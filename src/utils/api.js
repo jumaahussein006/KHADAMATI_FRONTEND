@@ -3,10 +3,10 @@ import axios from 'axios';
 const TOKEN_KEY = 'khadamati_token';
 const USER_KEY = 'khadamati_user';
 
-// Create an Axios instance
-export const BASE_URL = 'http://127.0.0.1:5000';
-export const API_URL = `${BASE_URL}/api/v1`;
-export const UPLOAD_URL = `${BASE_URL}`;
+// Get API URL from environment variable, fallback to localhost for local dev
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api/v1';
+export const API_URL = BASE_URL;
+export const UPLOAD_URL = BASE_URL.replace('/api/v1', '');
 
 const api = axios.create({
     baseURL: API_URL,
@@ -41,12 +41,12 @@ api.interceptors.response.use(
     (error) => {
         // Network errors (no response from server)
         if (!error.response) {
-            if (error.code === 'ECONNABORTED' || String(error.message || '').toLowerCase().includes('timeout')) {
+            if (error.code === 'E CONNABORTED' || String(error.message || '').toLowerCase().includes('timeout')) {
                 error.networkError = true;
-                error.message = 'Network error. Please check your connection and ensure the backend server is running on http://localhost:5000';
+                error.message = `Network error. Please check your connection and ensure the backend server is running on ${API_URL}`;
             } else {
                 error.networkError = true;
-                error.message = 'Cannot connect to server. Please ensure the backend server is running on http://localhost:5000';
+                error.message = `Cannot connect to server. Please ensure the backend server is running on ${API_URL}`;
             }
             return Promise.reject(error);
         }
