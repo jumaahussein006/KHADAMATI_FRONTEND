@@ -106,8 +106,13 @@ const ServiceDetails = () => {
     );
   }
 
-  const categoryId = service.categoryId || service.category_id || service.category?.categoryId;
-  const problemExamples = getProblemExamples(categoryId, i18n.language);
+  const catId =
+    service?.categoryId ||
+    service?.category_id ||
+    service?.category?.categoryId ||
+    service?.category?.category_id;
+
+  const problemExamples = getProblemExamples(catId, i18n.language);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -187,6 +192,16 @@ const ServiceDetails = () => {
                         </div>
                       </div>
                     )}
+
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder={i18n.language === 'ar' ? 'أو صف المشكلة هنا...' : 'Or describe the problem here...'}
+                        value={requestData.problemDescription}
+                        onChange={(e) => setRequestData((p) => ({ ...p, problemDescription: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-lg border dark:bg-gray-800 dark:text-white"
+                      />
+                    </div>
                   </div>
 
                   <div>
