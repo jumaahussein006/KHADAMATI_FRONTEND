@@ -112,7 +112,13 @@ const ServiceDetails = () => {
     service?.category?.categoryId ||
     service?.category?.category_id;
 
-  const problemExamples = getProblemExamples(catId, i18n.language);
+  // Get examples, with fallback to electrical (ID 2) if category not found
+  let problemExamples = getProblemExamples(catId, i18n.language);
+
+  // GUARANTEED FALLBACK: If no examples found, use electrical examples
+  if (!problemExamples || problemExamples.length === 0) {
+    problemExamples = getProblemExamples(2, i18n.language);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -183,8 +189,8 @@ const ServiceDetails = () => {
                               type="button"
                               onClick={() => setRequestData((p) => ({ ...p, problemDescription: example }))}
                               className={`px-3 py-2 rounded-lg text-sm font-medium transition ${requestData.problemDescription === example
-                                  ? 'bg-[#0BA5EC] text-white'
-                                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-[#0BA5EC] hover:text-[#0BA5EC]'
+                                ? 'bg-[#0BA5EC] text-white'
+                                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-[#0BA5EC] hover:text-[#0BA5EC]'
                                 }`}
                             >
                               {example}
