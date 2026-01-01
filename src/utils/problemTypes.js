@@ -1,6 +1,6 @@
 // Problem examples by category (bilingual) - displayed as selectable list
 export const PROBLEM_EXAMPLES = {
-    1: { // Plumbing
+    13: { // Plumbing
         examples_en: [
             "Broken faucet",
             "Water leakage",
@@ -12,7 +12,7 @@ export const PROBLEM_EXAMPLES = {
             "مشكلة أنابيب الحمام"
         ]
     },
-    2: { // Electrical
+    14: { // Electrical
         examples_en: [
             "Power outage",
             "Socket replacement",
@@ -24,7 +24,7 @@ export const PROBLEM_EXAMPLES = {
             "تركيب إضاءة"
         ]
     },
-    3: { // Cleaning
+    15: { // Cleaning
         examples_en: [
             "Apartment cleaning",
             "After construction cleaning",
@@ -36,7 +36,7 @@ export const PROBLEM_EXAMPLES = {
             "تنظيف عميق للمطبخ"
         ]
     },
-    4: { // Painting
+    16: { // Painting
         examples_en: [
             "Room repaint",
             "Wall cracks repair",
@@ -48,7 +48,7 @@ export const PROBLEM_EXAMPLES = {
             "دهان شقة كاملة"
         ]
     },
-    5: { // AC Repair
+    17: { // AC Repair
         examples_en: [
             "AC not cooling",
             "Gas refill",
@@ -60,7 +60,7 @@ export const PROBLEM_EXAMPLES = {
             "صيانة مكيف"
         ]
     },
-    6: { // Carpentry
+    18: { // Carpentry
         examples_en: [
             "Door repair",
             "Furniture assembly",
